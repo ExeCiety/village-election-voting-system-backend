@@ -45,4 +45,4 @@ This repository contains the backend codebase for a web-based electronic voting 
     php artisan serve
     ```
    
-8. Access the application in your web browser at `http://
+8. Access the application in your web browser at `http://localhost:8000`
