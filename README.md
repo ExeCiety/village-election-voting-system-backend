@@ -1,9 +1,12 @@
 # Backend Village Election Voting System
 
 ## Description
-This repository contains the backend codebase for a web-based electronic voting system designed specifically for village head elections. The system is built using Laravel 11, a powerful PHP framework for web application development.
+
+This repository contains the backend codebase for a web-based electronic voting system designed specifically for village
+head elections. The system is built using Laravel 11, a powerful PHP framework for web application development.
 
 ## Requirements
+
 - PHP 8.2 or higher
 - Composer
 - PostgreSQL 13 or higher
@@ -25,11 +28,12 @@ This repository contains the backend codebase for a web-based electronic voting 
     composer install
     ```
 
-4. Copy the `.env.example` file to `.env` and configure your environment variables, including your database connection details:
+4. Copy the `.env.example` file to `.env` and configure your environment variables, including your database connection
+   details:
     ```
     cp .env.example .env
     ```
-   
+
 5. Generate an application key:
     ```
     php artisan key:generate
@@ -44,5 +48,10 @@ This repository contains the backend codebase for a web-based electronic voting 
     ```
     php artisan serve
     ```
-   
+
 8. Access the application in your web browser at `http://localhost:8000`
+
+## API Documentation
+
+Postman Documenter
+https://documenter.getpostman.com/view/7865721/2sA3QwbUwa
