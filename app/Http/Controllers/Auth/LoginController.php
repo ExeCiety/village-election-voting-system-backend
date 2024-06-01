@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\User\UserForLoginResource;
+use App\Services\Auth\LoginService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+class LoginController extends Controller
+{
+    public function __construct(private readonly LoginService $loginService)
+    {
+        //
+    }
+
+    /**
+     * Login
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $loginData = $this->loginService->login($request);
+
+        return response()->json([
+            'message' => trans('auth.login_success'),
+            'data' => [
+                'user' => new UserForLoginResource($loginData['user']),
+                'bearer_token' => $loginData['bearer_token'],
+                'expired_at' => $loginData['expired_at']
+            ],
+            'errors' => null
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Logout
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $this->loginService->logout($request);
+
+        return response()->json([
+            'message' => trans('auth.logout_success'),
+            'data' => null,
+            'errors' => null
+        ], Response::HTTP_OK);
+    }
+}
