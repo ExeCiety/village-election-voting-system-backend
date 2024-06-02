@@ -24,6 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('telescope:prune')->daily()
+            ->then(function () {
+                info('Telescope pruned successfully');
+            });
         $schedule->command('passport:purge')->dailyAt('00:01')
             ->then(function () {
                 info('Passport tokens purged successfully');
