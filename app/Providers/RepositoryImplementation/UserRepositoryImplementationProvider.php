@@ -2,6 +2,8 @@
 
 namespace App\Providers\RepositoryImplementation;
 
+use App\Repositories\Permission\RoleRepository;
+use App\Repositories\Permission\RoleRepositoryImpl;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryImpl;
 use Illuminate\Contracts\Support\DeferrableProvider;
@@ -15,6 +17,7 @@ class UserRepositoryImplementationProvider extends ServiceProvider implements De
      * @var array
      */
     public array $singletons = [
+        RoleRepository::class => RoleRepositoryImpl::class,
         UserRepository::class => UserRepositoryImpl::class,
     ];
 
@@ -26,6 +29,7 @@ class UserRepositoryImplementationProvider extends ServiceProvider implements De
     public function provides(): array
     {
         return [
+            RoleRepository::class,
             UserRepository::class,
         ];
     }

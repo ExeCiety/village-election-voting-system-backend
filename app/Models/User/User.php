@@ -2,22 +2,24 @@
 
 namespace App\Models\User;
 
-use App\Traits\ModelUsingUuid;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * User Model
  *
  * @mixin \Illuminate\Database\Eloquent\Builder
  *
+ * @property string id
  * @property string name
  * @property string username
  * @property string password
  */
 class User extends Authenticatable
 {
-    use ModelUsingUuid, HasApiTokens;
+    use HasUuids, HasRoles, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.

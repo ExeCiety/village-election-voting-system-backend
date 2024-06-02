@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 readonly class LoginServiceImpl implements LoginService
 {
-    public function __construct(private UserRepository $userRepository)
+    public function __construct(private UserRepository $userRepo)
     {
         //
     }
@@ -23,7 +23,7 @@ readonly class LoginServiceImpl implements LoginService
      */
     public function login(Request $request): array
     {
-        $user = $this->userRepository->findForLogin($request->only('username'));
+        $user = $this->userRepo->findForLogin($request->only('username'));
         if (!$user) {
             throw new \Exception(
                 trans('auth.incorrect_credentials'),
@@ -38,7 +38,16 @@ readonly class LoginServiceImpl implements LoginService
             );
         }
 
-        $token = $user->createToken('auth_token');
+        try {
+            DB::beginTransaction();
+
+            $token = $user->createToken('auth_token');
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
 
         return [
             'user' => $user,
@@ -62,7 +71,9 @@ readonly class LoginServiceImpl implements LoginService
         try {
             DB::beginTransaction();
 
-            $user->tokens()->each(fn($token) => $token->revoke());
+            $user->tokens()->update([
+                'revoked' => true
+            ]);
 
             DB::commit();
         } catch (\Exception $e) {

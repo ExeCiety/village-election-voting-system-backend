@@ -47,7 +47,9 @@ class Handler extends ExceptionHandler
      */
     public function report(\Throwable $e): void
     {
-        $statusCode = isHttpStatusCodeValid($e->getCode()) ? $e->getCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+        $statusCode = isHttpStatusCodeValid(is_int($e->getCode()) ? $e->getCode() : 0)
+            ? $e->getCode()
+            : Response::HTTP_INTERNAL_SERVER_ERROR;
 
         if (isHttpStatusCodeError($statusCode) && isHttpStatusCodeServerError($statusCode))
             parent::report($e);
