@@ -2,9 +2,11 @@
 
 namespace App\Models\User;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -16,6 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string name
  * @property string username
  * @property string password
+ * @property Collection<Role> roles
  */
 class User extends Authenticatable
 {

@@ -4,6 +4,8 @@ namespace App\Providers\ServiceImplementation;
 
 use App\Services\User\CandidatePairService;
 use App\Services\User\CandidatePairServiceImpl;
+use App\Services\User\VoterService;
+use App\Services\User\VoterServiceImpl;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,6 +18,7 @@ class UserServiceImplementationProvider extends ServiceProvider implements Defer
      */
     public array $singletons = [
         CandidatePairService::class => CandidatePairServiceImpl::class,
+        VoterService::class => VoterServiceImpl::class,
     ];
 
     /**
@@ -27,6 +30,7 @@ class UserServiceImplementationProvider extends ServiceProvider implements Defer
     {
         return [
             CandidatePairService::class,
+            VoterService::class,
         ];
     }
 

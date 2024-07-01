@@ -8,8 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * Role For General Resource
  *
- * @property string id
- * @property string name
+ * @mixin \App\Models\Permission\Role
  */
 class RoleForGeneralResource extends JsonResource
 {

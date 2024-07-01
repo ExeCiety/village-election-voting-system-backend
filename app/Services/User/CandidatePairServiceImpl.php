@@ -24,7 +24,7 @@ readonly class CandidatePairServiceImpl implements CandidatePairService
     public function getAllCandidatePairs(Request $request): Collection|Paginator
     {
         return $this->candidatePairRepo->getAll([
-            'paginate' => $request->input('paginate'),
+            'paginate' => $request->input('paginate') === 'true',
             'per_page' => $request->input('per_page'),
             'page' => $request->input('page')
         ]);

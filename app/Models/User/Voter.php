@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\Election\ElectionSession;
+use App\Traits\DefaultTimestampsFormat;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Voter extends Model
 {
-    use HasUuids;
+    use HasUuids, DefaultTimestampsFormat;
 
     /**
      * The attributes that are mass assignable.

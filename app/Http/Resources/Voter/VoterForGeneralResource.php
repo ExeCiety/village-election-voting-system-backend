@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Resources\ElectionSession;
+namespace App\Http\Resources\Voter;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Election Session For General Resource
+ * Voter For General Resource
  *
- * @mixin \App\Models\Election\ElectionSession
+ * @mixin \App\Models\User\Voter
  */
-class ElectionSessionForGeneralResource extends JsonResource
+class VoterForGeneralResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,9 +21,11 @@ class ElectionSessionForGeneralResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
+            'nik' => $this->nik,
+            'full_name' => $this->full_name,
+            'birth_date' => $this->birth_date,
+            'address' => $this->address,
+            'gender' => $this->gender,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

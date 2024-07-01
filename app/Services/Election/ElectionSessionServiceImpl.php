@@ -24,7 +24,7 @@ readonly class ElectionSessionServiceImpl implements ElectionSessionService
     public function getAllElectionSessions(Request $request): Collection|Paginator
     {
         return $this->electionSessionRepo->getAll([
-            'paginate' => $request->input('paginate'),
+            'paginate' => $request->input('paginate') === 'true',
             'per_page' => $request->input('per_page'),
             'page' => $request->input('page')
         ]);
@@ -52,7 +52,7 @@ readonly class ElectionSessionServiceImpl implements ElectionSessionService
      */
     public function createElectionSession(Request $request): void
     {
-        $this->electionSessionRepo->createElectionSession([
+        $this->electionSessionRepo->create([
             'name' => $request->input('name'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date')

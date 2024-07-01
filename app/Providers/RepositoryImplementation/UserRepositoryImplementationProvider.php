@@ -8,6 +8,8 @@ use App\Repositories\User\CandidatePairRepository;
 use App\Repositories\User\CandidatePairRepositoryImpl;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryImpl;
+use App\Repositories\User\VoterRepository;
+use App\Repositories\User\VoterRepositoryImpl;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,6 +24,7 @@ class UserRepositoryImplementationProvider extends ServiceProvider implements De
         RoleRepository::class => RoleRepositoryImpl::class,
         UserRepository::class => UserRepositoryImpl::class,
         CandidatePairRepository::class => CandidatePairRepositoryImpl::class,
+        VoterRepository::class => VoterRepositoryImpl::class,
     ];
 
     /**
@@ -35,6 +38,7 @@ class UserRepositoryImplementationProvider extends ServiceProvider implements De
             RoleRepository::class,
             UserRepository::class,
             CandidatePairRepository::class,
+            VoterRepository::class,
         ];
     }
 

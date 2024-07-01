@@ -4,18 +4,13 @@ namespace App\Http\Resources\User;
 
 use App\Http\Resources\BaseResourceCollection;
 use App\Http\Resources\Role\RoleForGeneralResource;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Spatie\Permission\Models\Role;
 
 /**
  * User For Login Resource
  *
- * @property string id
- * @property string username
- * @property string name
- * @property Collection<Role> roles
+ * @mixin \App\Models\User\User
  */
 class UserForLoginResource extends JsonResource
 {

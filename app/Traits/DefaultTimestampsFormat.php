@@ -4,6 +4,12 @@ namespace App\Traits;
 
 use Illuminate\Support\Carbon;
 
+/**
+ * Trait DefaultTimestampsFormat
+ *
+ * @property string created_at
+ * @property string updated_at
+ */
 trait DefaultTimestampsFormat
 {
     /**

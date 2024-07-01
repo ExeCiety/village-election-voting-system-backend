@@ -5,6 +5,11 @@ namespace App\Http\Resources\CandidatePair;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Candidate Pair For General Resource
+ *
+ * @mixin \App\Models\User\CandidatePair
+ */
 class CandidatePairForGeneralResource extends JsonResource
 {
     /**

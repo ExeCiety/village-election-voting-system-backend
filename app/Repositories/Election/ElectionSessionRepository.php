@@ -31,7 +31,7 @@ interface ElectionSessionRepository
      * @param array $payload
      * @return \App\Models\Election\ElectionSession
      */
-    public function createElectionSession(array $payload): ElectionSession;
+    public function create(array $payload): ElectionSession;
 
     /**
      * Update Election Session

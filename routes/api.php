@@ -14,4 +14,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('candidate-pairs')->group(function () {
         require base_path('routes/api/v1/candidate_pair.php');
     });
+
+    Route::prefix('voters')->group(function () {
+        require base_path('routes/api/v1/voter.php');
+    });
 });

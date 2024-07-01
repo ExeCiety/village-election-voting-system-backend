@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @mixin \Illuminate\Database\Eloquent\Builder
  *
  * @property string id
+ * @property string name
  * @property string start_date
  * @property string end_date
  */
