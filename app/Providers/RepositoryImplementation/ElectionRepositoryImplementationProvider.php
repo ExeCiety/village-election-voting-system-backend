@@ -2,16 +2,12 @@
 
 namespace App\Providers\RepositoryImplementation;
 
-use App\Repositories\Permission\RoleRepository;
-use App\Repositories\Permission\RoleRepositoryImpl;
-use App\Repositories\User\CandidatePairRepository;
-use App\Repositories\User\CandidatePairRepositoryImpl;
-use App\Repositories\User\UserRepository;
-use App\Repositories\User\UserRepositoryImpl;
+use App\Repositories\Election\ElectionSessionRepository;
+use App\Repositories\Election\ElectionSessionRepositoryImpl;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class UserRepositoryImplementationProvider extends ServiceProvider implements DeferrableProvider
+class ElectionRepositoryImplementationProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * All the container singletons that should be registered.
@@ -19,9 +15,7 @@ class UserRepositoryImplementationProvider extends ServiceProvider implements De
      * @var array
      */
     public array $singletons = [
-        RoleRepository::class => RoleRepositoryImpl::class,
-        UserRepository::class => UserRepositoryImpl::class,
-        CandidatePairRepository::class => CandidatePairRepositoryImpl::class,
+        ElectionSessionRepository::class => ElectionSessionRepositoryImpl::class,
     ];
 
     /**
@@ -32,9 +26,7 @@ class UserRepositoryImplementationProvider extends ServiceProvider implements De
     public function provides(): array
     {
         return [
-            RoleRepository::class,
-            UserRepository::class,
-            CandidatePairRepository::class,
+            ElectionSessionRepository::class,
         ];
     }
 

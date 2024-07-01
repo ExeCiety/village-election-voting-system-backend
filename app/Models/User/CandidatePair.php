@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use App\Models\Election\ElectionResult;
 use App\Models\Election\ElectionSession;
+use App\Traits\DefaultTimestampsFormat;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,15 +17,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property string id
  * @property string election_session_id
- * @property string first_name
- * @property string last_name
+ * @property string first_candidate_name
+ * @property string second_candidate_name
  * @property string description
  * @property string image_url
  * @property string number
  */
 class CandidatePair extends Model
 {
-    use HasUuids;
+    use HasUuids, DefaultTimestampsFormat;
 
     /**
      * The attributes that are mass assignable.
@@ -33,8 +34,8 @@ class CandidatePair extends Model
      */
     protected $fillable = [
         'election_session_id',
-        'first_name',
-        'last_name',
+        'first_candidate_name',
+        'second_candidate_name',
         'description',
         'image_url',
         'number'

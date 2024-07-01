@@ -14,8 +14,8 @@ return new class extends Migration {
         Schema::create('candidate_pairs', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('uuid_generate_v4()'));
             $table->uuid('election_session_id');
-            $table->string('first_name', 50);
-            $table->string('last_name', 50);
+            $table->string('first_candidate_name');
+            $table->string('second_candidate_name');
             $table->text('description')->nullable();
             $table->text('image_url')->nullable();
             $table->unsignedInteger('number');

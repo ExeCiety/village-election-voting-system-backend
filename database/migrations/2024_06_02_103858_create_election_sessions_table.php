@@ -13,6 +13,7 @@ return new class extends Migration {
     {
         Schema::create('election_sessions', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('uuid_generate_v4()'));
+            $table->string('name');
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->timestamps();

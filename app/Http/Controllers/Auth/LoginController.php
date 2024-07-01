@@ -20,8 +20,8 @@ class LoginController extends Controller
     /**
      * Login
      *
-     * @param LoginRequest $request
-     * @return JsonResponse
+     * @param \App\Http\Requests\Auth\LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request): JsonResponse
     {

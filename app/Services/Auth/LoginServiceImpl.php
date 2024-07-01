@@ -6,6 +6,7 @@ use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 readonly class LoginServiceImpl implements LoginService
 {
@@ -30,8 +31,8 @@ readonly class LoginServiceImpl implements LoginService
                 Response::HTTP_BAD_REQUEST
             );
         }
-
-        if (!password_verify($request->input('password'), $user->password)) {
+        
+        if (!Hash::check($request->input('password'), $user->password)) {
             throw new \Exception(
                 trans('auth.incorrect_credentials'),
                 Response::HTTP_BAD_REQUEST

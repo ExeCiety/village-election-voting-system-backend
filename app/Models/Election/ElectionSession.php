@@ -4,9 +4,11 @@ namespace App\Models\Election;
 
 use App\Models\User\CandidatePair;
 use App\Models\User\Voter;
+use App\Traits\DefaultTimestampsFormat;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * Election Session Model
@@ -19,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class ElectionSession extends Model
 {
-    use HasUuids;
+    use HasUuids, DefaultTimestampsFormat;
 
     /**
      * The attributes that are mass assignable.
@@ -27,9 +29,34 @@ class ElectionSession extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'start_date',
         'end_date'
     ];
+
+    // Accessor Methods
+
+    /**
+     * Get the start date attribute
+     *
+     * @param $value
+     * @return string
+     */
+    public function getStartDateAttribute($value): string
+    {
+        return Carbon::parse($value)->format(config('app.timestamp_format'));
+    }
+
+    /**
+     * Get the end date attribute
+     *
+     * @param $value
+     * @return string
+     */
+    public function getEndDateAttribute($value): string
+    {
+        return Carbon::parse($value)->format(config('app.timestamp_format'));
+    }
 
     // Relation Methods
     // Has Many
