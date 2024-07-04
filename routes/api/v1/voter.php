@@ -12,3 +12,9 @@ Route::get('/{param}', [VoterController::class, 'show'])
 
 Route::post('/', [VoterController::class, 'store'])
     ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);
+
+Route::patch('/{param}', [VoterController::class, 'update'])
+    ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);
+
+Route::delete('/', [VoterController::class, 'destroy'])
+    ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);

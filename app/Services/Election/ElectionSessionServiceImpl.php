@@ -7,6 +7,7 @@ use App\Repositories\Election\ElectionSessionRepository;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 readonly class ElectionSessionServiceImpl implements ElectionSessionService
 {
@@ -24,7 +25,7 @@ readonly class ElectionSessionServiceImpl implements ElectionSessionService
     public function getAllElectionSessions(Request $request): Collection|Paginator
     {
         return $this->electionSessionRepo->getAll([
-            'paginate' => $request->input('paginate') === 'true',
+            'paginate' => $request->input('paginate') == 'true',
             'per_page' => $request->input('per_page'),
             'page' => $request->input('page')
         ]);
@@ -49,14 +50,24 @@ readonly class ElectionSessionServiceImpl implements ElectionSessionService
      *
      * @param \Illuminate\Http\Request $request
      * @return void
+     * @throws \Throwable
      */
     public function createElectionSession(Request $request): void
     {
-        $this->electionSessionRepo->create([
-            'name' => $request->input('name'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date')
-        ]);
+        try {
+            DB::beginTransaction();
+
+            $this->electionSessionRepo->create([
+                'name' => $request->input('name'),
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date')
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**
@@ -65,14 +76,24 @@ readonly class ElectionSessionServiceImpl implements ElectionSessionService
      * @param \Illuminate\Http\Request $request
      * @param string $param
      * @return void
+     * @throws \Throwable
      */
     public function updateElectionSessionByParam(Request $request, string $param): void
     {
-        $this->electionSessionRepo->updateByParam($param, [
-            'name' => $request->input('name'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date')
-        ]);
+        try {
+            DB::beginTransaction();
+
+            $this->electionSessionRepo->updateByParam($param, [
+                'name' => $request->input('name'),
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date')
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**
@@ -80,11 +101,21 @@ readonly class ElectionSessionServiceImpl implements ElectionSessionService
      *
      * @param \Illuminate\Http\Request $request
      * @return void
+     * @throws \Throwable
      */
     public function bulkDeleteElectionSessions(Request $request): void
     {
-        $this->electionSessionRepo->bulkDelete([
-            'ids' => $request->input('ids')
-        ]);
+        try {
+            DB::beginTransaction();
+
+            $this->electionSessionRepo->bulkDelete([
+                'ids' => $request->input('ids')
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 }

@@ -21,10 +21,12 @@ readonly class CandidatePairRepositoryImpl implements CandidatePairRepository
      */
     public function getAll(array $payload = []): Collection|Paginator
     {
-        if (isset($payload['paginate']) && $payload['paginate'])
-            return $this->candidatePair->simplePaginate($payload['per_page'] ?? null);
+        $candidatePairs = $this->candidatePair->baseFilter($payload);
 
-        return $this->candidatePair->get();
+        if (isset($payload['paginate']) && $payload['paginate'])
+            return $candidatePairs->simplePaginate($payload['per_page'] ?? null);
+
+        return $candidatePairs->get();
     }
 
     /**
@@ -75,6 +77,18 @@ readonly class CandidatePairRepositoryImpl implements CandidatePairRepository
     {
         $candidatePair = $this->getByParam($param, ['fail' => true]);
 
+        return $this->updateByModel($candidatePair, $payload);
+    }
+
+    /**
+     * Update Candidate Pair By Model
+     *
+     * @param \App\Models\User\CandidatePair $candidatePair
+     * @param array $payload
+     * @return \App\Models\User\CandidatePair
+     */
+    public function updateByModel(CandidatePair $candidatePair, array $payload): CandidatePair
+    {
         $candidatePair->update(
             array_filter([
                 'election_session_id' => $payload['election_session_id'] ?? null,

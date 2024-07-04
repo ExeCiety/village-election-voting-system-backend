@@ -8,7 +8,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Spatie\Permission\Exceptions\UnauthorizedException;
@@ -120,9 +119,10 @@ class Handler extends ExceptionHandler
         } else {
             $statusCode = isHttpStatusCodeValid($e->getCode()) ? $e->getCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
             $message = $e->getMessage() ?? Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR];
-
-            if ($statusCode === Response::HTTP_INTERNAL_SERVER_ERROR) Log::error($e->getMessage());
         }
+
+        if ($statusCode === Response::HTTP_INTERNAL_SERVER_ERROR)
+            $message = Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR];
 
         return response()->json([
             'message' => $message,

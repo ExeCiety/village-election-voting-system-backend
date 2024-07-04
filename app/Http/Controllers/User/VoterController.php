@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Helpers\Model\VoterHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Voter\BulkDeleteVoterRequest;
 use App\Http\Requests\Voter\CreateVoterRequest;
+use App\Http\Requests\Voter\UpdateVoterRequest;
 use App\Http\Resources\BaseResourceCollection;
 use App\Http\Resources\Voter\VoterForGeneralResource;
 use App\Services\User\VoterService;
@@ -80,6 +82,47 @@ class VoterController extends Controller
             'data' => [
                 'otp' => $voter->otp
             ],
+            'errors' => null
+        ], Response::HTTP_CREATED);
+    }
+
+    /**
+     * Update Election Session
+     *
+     * @param \App\Http\Requests\Voter\UpdateVoterRequest $request
+     * @param string $param
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function update(UpdateVoterRequest $request, string $param): JsonResponse
+    {
+        $this->voterService->updateVoterByParam($request, $param);
+
+        return response()->json([
+            'message' => trans('resource.update_data_success', [
+                'name' => $this->resourceKeyName
+            ]),
+            'data' => null,
+            'errors' => null
+        ], Response::HTTP_CREATED);
+    }
+
+    /**
+     * Bulk Delete Voters
+     *
+     * @param \App\Http\Requests\Voter\BulkDeleteVoterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function destroy(BulkDeleteVoterRequest $request): JsonResponse
+    {
+        $this->voterService->bulkDeleteVoters($request);
+
+        return response()->json([
+            'message' => trans('resource.delete_data_success', [
+                'name' => $this->resourceKeyName
+            ]),
+            'data' => null,
             'errors' => null
         ], Response::HTTP_CREATED);
     }

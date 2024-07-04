@@ -25,7 +25,7 @@ class CandidatePairController extends Controller
     }
 
     /**
-     * Get Election Sessions
+     * Get Candidate Pairs
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -45,7 +45,7 @@ class CandidatePairController extends Controller
     }
 
     /**
-     * Get One Election Session
+     * Get One Candidate Pair
      *
      * @param \Illuminate\Http\Request $request
      * @param string $param
@@ -84,7 +84,7 @@ class CandidatePairController extends Controller
     }
 
     /**
-     * Create Election Session
+     * Create Candidate Pair
      *
      * @param \App\Http\Requests\CandidatePair\UpdateCandidatePairRequest $request
      * @param string $param
@@ -104,7 +104,7 @@ class CandidatePairController extends Controller
     }
 
     /**
-     * Bulk Delete Election Sessions
+     * Bulk Delete Candidate Pairs
      *
      * @param \App\Http\Requests\CandidatePair\BulkDeleteCandidatePairRequest $request
      * @return \Illuminate\Http\JsonResponse

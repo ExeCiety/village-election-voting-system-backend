@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\CandidatePair;
+namespace App\Http\Requests\Voter;
 
+use App\Helpers\Model\VoterHelper;
+use App\Rules\Voter\UniqueNik;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCandidatePairRequest extends FormRequest
+class UpdateVoterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,23 +30,26 @@ class UpdateCandidatePairRequest extends FormRequest
                 'uuid',
                 'exists:election_sessions,id'
             ],
-            'first_candidate_name' => [
-                'string'
+            'nik' => [
+                'string',
+                'max:16',
+                new UniqueNik($this->input('election_session_id'))
             ],
-            'second_candidate_name' => [
-                'string'
+            'full_name' => [
+                'string',
+                'max:255'
             ],
-            'description' => [
-                'string'
+            'birth_date' => [
+                'date',
+                'date_format:Y-m-d'
             ],
-            'image' => [
-                'image',
-                'mimes:jpeg,png,jpg,gif,svg',
-                'max:2048'
+            'address' => [
+                'string',
+                'max:255'
             ],
-            'number' => [
-                'integer',
-                'unique:candidate_pairs,number,' . $this->route('param')
+            'gender' => [
+                'string',
+                'in:' . implode(',', array_values(VoterHelper::GENDERS))
             ]
         ];
     }

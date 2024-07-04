@@ -36,10 +36,11 @@ function isHttpStatusCodeServerError(int $statusCode): bool
 /**
  * Is Http Status Code Valid
  *
- * @param int $statusCode
+ * @param int|string $statusCode
  * @return bool
  */
-function isHttpStatusCodeValid(int $statusCode): bool
+function isHttpStatusCodeValid(int|string $statusCode): bool
 {
+    $statusCode = (int)$statusCode;
     return $statusCode >= 100 && $statusCode < 600;
 }

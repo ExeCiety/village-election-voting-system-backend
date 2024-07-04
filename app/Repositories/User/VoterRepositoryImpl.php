@@ -75,4 +75,41 @@ readonly class VoterRepositoryImpl implements VoterRepository
             ], isNotNullArrayFilter())
         );
     }
+
+    /**
+     * Update Voter By Param
+     *
+     * @param string $param
+     * @param array $payload
+     * @return \App\Models\User\Voter
+     */
+    public function updateByParam(string $param, array $payload): Voter
+    {
+        $voter = $this->getByParam($param, ['fail' => true]);
+
+        $voter->update(
+            array_filter([
+                'election_session_id' => $payload['election_session_id'] ?? null,
+                'nik' => $payload['nik'] ?? null,
+                'full_name' => $payload['full_name'] ?? null,
+                'birth_date' => $payload['birth_date'] ?? null,
+                'address' => $payload['address'] ?? null,
+                'gender' => $payload['gender'] ?? null,
+                'otp' => $payload['otp'] ?? null
+            ], isNotNullArrayFilter())
+        );
+
+        return $voter->refresh();
+    }
+
+    /**
+     * Bulk Delete Voters
+     *
+     * @param array $payload
+     * @return bool|null
+     */
+    public function bulkDelete(array $payload): bool|null
+    {
+        return $this->voter->whereIn('id', $payload['ids'])->delete();
+    }
 }

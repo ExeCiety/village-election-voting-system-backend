@@ -31,7 +31,7 @@ readonly class LoginServiceImpl implements LoginService
                 Response::HTTP_BAD_REQUEST
             );
         }
-        
+
         if (!Hash::check($request->input('password'), $user->password)) {
             throw new \Exception(
                 trans('auth.incorrect_credentials'),
@@ -53,7 +53,7 @@ readonly class LoginServiceImpl implements LoginService
         return [
             'user' => $user,
             'bearer_token' => $token->accessToken,
-            'expired_at' => $token->token->expires_at
+            'expired_at' => $token->token->expires_at->format(config('app.timestamp_format'))
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Resources\CandidatePair;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Candidate Pair For General Resource
@@ -24,7 +25,7 @@ class CandidatePairForGeneralResource extends JsonResource
             'first_candidate_name' => $this->first_candidate_name,
             'second_candidate_name' => $this->second_candidate_name,
             'description' => $this->description,
-            'image_url' => $this->image_url,
+            'image_url' => Storage::disk(config('filesystems.disks.public.name'))->url($this->image_url),
             'number' => intval($this->number),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use App\Models\Election\ElectionResult;
 use App\Models\Election\ElectionSession;
+use App\Traits\BaseFilterModel;
 use App\Traits\DefaultTimestampsFormat;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class CandidatePair extends Model
 {
-    use HasUuids, DefaultTimestampsFormat;
+    use HasUuids, DefaultTimestampsFormat, BaseFilterModel;
 
     /**
      * The attributes that are mass assignable.

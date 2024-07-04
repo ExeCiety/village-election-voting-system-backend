@@ -33,4 +33,23 @@ interface VoterService
      * @return \App\Models\User\Voter
      */
     public function createVoter(Request $request): Voter;
+
+    /**
+     * Update Voter
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $param
+     * @return void
+     * @throws \Throwable
+     */
+    public function updateVoterByParam(Request $request, string $param): void;
+
+    /**
+     * Bulk Delete Voters
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     * @throws \Throwable
+     */
+    public function bulkDeleteVoters(Request $request): void;
 }

@@ -7,6 +7,7 @@ use App\Repositories\User\VoterRepository;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 readonly class VoterServiceImpl implements VoterService
@@ -25,7 +26,7 @@ readonly class VoterServiceImpl implements VoterService
     public function getAllVoters(Request $request): Collection|Paginator
     {
         return $this->voterRepo->getAll([
-            'paginate' => $request->input('paginate') === 'true',
+            'paginate' => $request->input('paginate') == 'true',
             'per_page' => $request->input('per_page'),
             'page' => $request->input('page')
         ]);
@@ -50,18 +51,81 @@ readonly class VoterServiceImpl implements VoterService
      *
      * @param \Illuminate\Http\Request $request
      * @return \App\Models\User\Voter
+     * @throws \Throwable
      */
     public function createVoter(Request $request): Voter
     {
-        return $this->voterRepo->create([
-            'election_session_id' => $request->input('election_session_id'),
-            'nik' => $request->input('nik'),
-            'full_name' => $request->input('full_name'),
-            'birth_date' => $request->input('birth_date'),
-            'address' => $request->input('address'),
-            'gender' => $request->input('gender'),
-            'otp' => $this->generateUniqueOtp()
-        ]);
+        try {
+            DB::beginTransaction();
+
+            $voter = $this->voterRepo->create([
+                'election_session_id' => $request->input('election_session_id'),
+                'nik' => $request->input('nik'),
+                'full_name' => $request->input('full_name'),
+                'birth_date' => $request->input('birth_date'),
+                'address' => $request->input('address'),
+                'gender' => $request->input('gender'),
+                'otp' => $this->generateUniqueOtp()
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        return $voter;
+    }
+
+    /**
+     * Update Voter
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $param
+     * @return void
+     * @throws \Throwable
+     */
+    public function updateVoterByParam(Request $request, string $param): void
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->voterRepo->updateByParam($param, [
+                'nik' => $request->input('nik'),
+                'full_name' => $request->input('full_name'),
+                'birth_date' => $request->input('birth_date'),
+                'address' => $request->input('address'),
+                'gender' => $request->input('gender'),
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * Bulk Delete Voters
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     * @throws \Throwable
+     */
+    public function bulkDeleteVoters(Request $request): void
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->voterRepo->bulkDelete([
+                'ids' => $request->input('ids')
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -71,7 +135,7 @@ readonly class VoterServiceImpl implements VoterService
      */
     private function generateUniqueOtp(): string
     {
-        $otp = Str::upper(Str::random(8));
+        $otp = Str::upper(Str::random(12));
         if (!$this->voterRepo->isOtpExists($otp)) return $otp;
 
         return $this->generateUniqueOtp();

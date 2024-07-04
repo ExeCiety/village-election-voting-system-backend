@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\CandidatePair;
+namespace App\Http\Requests\Voter;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BulkDeleteCandidatePairRequest extends FormRequest
+class BulkDeleteVoterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +32,7 @@ class BulkDeleteCandidatePairRequest extends FormRequest
             'ids.*' => [
                 'uuid',
                 'distinct',
-                'exists:candidate_pairs,id'
+                'exists:voters,id'
             ]
         ];
     }

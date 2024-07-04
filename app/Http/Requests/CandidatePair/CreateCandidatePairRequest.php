@@ -19,7 +19,7 @@ class CreateCandidatePairRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<int, string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -41,9 +41,11 @@ class CreateCandidatePairRequest extends FormRequest
                 'required',
                 'string'
             ],
-            'image_url' => [
+            'image' => [
                 'required',
-                'string'
+                'image',
+                'mimes:jpeg,png,jpg,gif,svg',
+                'max:2048'
             ],
             'number' => [
                 'required',

@@ -40,4 +40,21 @@ interface VoterRepository
      * @return Voter
      */
     public function create(array $data): Voter;
+
+    /**
+     * Update Voter By Param
+     *
+     * @param string $param
+     * @param array $payload
+     * @return \App\Models\User\Voter
+     */
+    public function updateByParam(string $param, array $payload): Voter;
+
+    /**
+     * Bulk Delete Voters
+     *
+     * @param array $payload
+     * @return bool|null
+     */
+    public function bulkDelete(array $payload): bool|null;
 }

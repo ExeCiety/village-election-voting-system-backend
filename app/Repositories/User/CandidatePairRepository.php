@@ -43,6 +43,15 @@ interface CandidatePairRepository
     public function updateByParam(string $param, array $payload): CandidatePair;
 
     /**
+     * Update Candidate Pair By Model
+     *
+     * @param \App\Models\User\CandidatePair $candidatePair
+     * @param array $payload
+     * @return \App\Models\User\CandidatePair
+     */
+    public function updateByModel(CandidatePair $candidatePair, array $payload): CandidatePair;
+
+    /**
      * Bulk Delete Election Sessions
      *
      * @param array $payload
