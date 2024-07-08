@@ -18,4 +18,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('voters')->group(function () {
         require base_path('routes/api/v1/voter.php');
     });
+
+    Route::prefix('users')->group(function () {
+        require base_path('routes/api/v1/user.php');
+    });
 });

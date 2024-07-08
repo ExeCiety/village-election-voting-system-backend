@@ -2,54 +2,54 @@
 
 namespace App\Services\User;
 
-use App\Models\User\Voter;
+use App\Models\User\User;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
-interface VoterService
+interface UserService
 {
     /**
-     * Get All Voters
+     * Get All Users
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Contracts\Pagination\Paginator
      */
-    public function getAllVoters(Request $request): Collection|Paginator;
+    public function getAllUsers(Request $request): Collection|Paginator;
 
     /**
-     * Get Voter By Param
+     * Get User By Param
      *
      * @param \Illuminate\Http\Request $request
      * @param string $param
-     * @return \App\Models\User\Voter|null
+     * @return \App\Models\User\User|null
      */
-    public function getVoterByParam(Request $request, string $param): Voter|null;
+    public function getUserByParam(Request $request, string $param): User|null;
 
     /**
-     * Create Voter
+     * Create User
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Models\User\Voter
+     * @return \App\Models\User\User
      */
-    public function createVoter(Request $request): Voter;
+    public function createUser(Request $request): User;
 
     /**
-     * Update Voter
+     * Update User
      *
      * @param \Illuminate\Http\Request $request
      * @param string $param
      * @return void
      * @throws \Throwable
      */
-    public function updateVoterByParam(Request $request, string $param): void;
+    public function updateUserByParam(Request $request, string $param): void;
 
     /**
-     * Bulk Delete Voters
+     * Bulk Delete Users
      *
      * @param \Illuminate\Http\Request $request
      * @return void
      * @throws \Throwable
      */
-    public function bulkDeleteVoters(Request $request): void;
+    public function bulkDeleteUsers(Request $request): void;
 }
