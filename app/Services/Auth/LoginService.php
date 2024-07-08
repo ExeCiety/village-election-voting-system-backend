@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Models\User\User;
 use Illuminate\Http\Request;
 
 interface LoginService
@@ -21,4 +22,12 @@ interface LoginService
      * @return void
      */
     public function logout(Request $request): void;
+
+    /**
+     * Get user logged in
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Models\User\User
+     */
+    public function getUserLoggedIn(Request $request): User;
 }

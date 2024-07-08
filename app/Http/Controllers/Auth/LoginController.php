@@ -54,4 +54,21 @@ class LoginController extends Controller
             'errors' => null
         ], Response::HTTP_OK);
     }
+
+    /**
+     * Get user logged in
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserLoggedIn(Request $request): JsonResponse
+    {
+        $user = $this->loginService->getUserLoggedIn($request);
+
+        return response()->json([
+            'message' => trans('resource.get_data_success'),
+            'data' => new UserForLoginResource($user),
+            'errors' => null
+        ], Response::HTTP_OK);
+    }
 }

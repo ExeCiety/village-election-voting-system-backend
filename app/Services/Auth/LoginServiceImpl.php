@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Models\User\User;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -81,5 +82,16 @@ readonly class LoginServiceImpl implements LoginService
             DB::rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * Get user logged in
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Models\User\User
+     */
+    public function getUserLoggedIn(Request $request): User
+    {
+        return $request->user();
     }
 }
