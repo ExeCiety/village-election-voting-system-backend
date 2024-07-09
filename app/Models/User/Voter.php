@@ -2,8 +2,11 @@
 
 namespace App\Models\User;
 
+use App\Helpers\Model\VoterHelper;
 use App\Models\Election\ElectionSession;
+use App\Traits\BaseFilterModel;
 use App\Traits\DefaultTimestampsFormat;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Voter extends Model
 {
-    use HasUuids, DefaultTimestampsFormat;
+    use HasUuids, DefaultTimestampsFormat, BaseFilterModel;
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +43,8 @@ class Voter extends Model
         'address',
         'gender',
         'otp',
-        'otp_status'
+        'otp_status',
+        'selected_candidate_pair_id'
     ];
 
     // Relation Methods
@@ -53,5 +57,23 @@ class Voter extends Model
     public function election_session(): BelongsTo
     {
         return $this->belongsTo(ElectionSession::class, 'election_session_id', 'id');
+    }
+
+    // Scope Methods
+
+    /**
+     * For Vote Candidate Scope
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param array $payload
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeForVoteCandidate(Builder $builder, array $payload): Builder
+    {
+        return $builder->where('otp', $payload['otp'] ?? null)
+            ->where('otp_status', VoterHelper::OTP_STATUSES['not_used'])
+            ->whereHas('election_session', function ($query) use ($payload) {
+                return $query->ongoing();
+            });
     }
 }

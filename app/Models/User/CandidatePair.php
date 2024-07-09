@@ -6,6 +6,7 @@ use App\Models\Election\ElectionResult;
 use App\Models\Election\ElectionSession;
 use App\Traits\BaseFilterModel;
 use App\Traits\DefaultTimestampsFormat;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +23,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string second_candidate_name
  * @property string description
  * @property string image_url
- * @property string number
+ * @property int number
+ * @property int total_vote
+ *
+ * @method Builder forVoteCandidate(array $payload)
  */
 class CandidatePair extends Model
 {
@@ -39,7 +43,8 @@ class CandidatePair extends Model
         'second_candidate_name',
         'description',
         'image_url',
-        'number'
+        'number',
+        'total_vote'
     ];
 
     // Relation Methods
@@ -57,12 +62,26 @@ class CandidatePair extends Model
     // Has Many
 
     /**
-     * Get the election results for the candidate pair
+     * Get the voters for the candidate pair
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function election_results(): HasMany
+    public function voters(): HasMany
     {
-        return $this->hasMany(ElectionResult::class, 'candidate_pair_id', 'id');
+        return $this->hasMany(Voter::class, 'selected_candidate_pair_id', 'id');
+    }
+
+    // Scope Methods
+
+    /**
+     * For Vote Candidate Scope
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param array $payload
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeForVoteCandidate(Builder $builder, array $payload): Builder
+    {
+        return $builder->where('election_session_id', $payload['election_session_id']);
     }
 }

@@ -27,6 +27,15 @@ interface CandidatePairService
     public function getCandidatePairByParam(Request $request, string $param): CandidatePair|null;
 
     /**
+     * Get Candidate Pair For Vote Candidate
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $param
+     * @return \App\Models\User\CandidatePair|null
+     */
+    public function getCandidatePairForVoteCandidate(Request $request, string $param): CandidatePair|null;
+
+    /**
      * Create Candidate Pair
      *
      * @param \Illuminate\Http\Request $request
@@ -42,6 +51,16 @@ interface CandidatePairService
      * @return void
      */
     public function updateCandidatePairByParam(Request $request, string $param): void;
+
+    /**
+     * Increment Total Vote For Vote Candidate
+     *
+     * @param Request $request
+     * @param string $param
+     * @return void
+     * @throws \Throwable
+     */
+    public function incrementTotalVoteForVoteCandidate(Request $request, string $param): void;
 
     /**
      * Bulk Delete Candidate Pair

@@ -13,6 +13,9 @@ Route::get('/{param}', [VoterController::class, 'show'])
 Route::post('/', [VoterController::class, 'store'])
     ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);
 
+Route::post('/check-ongoing-available-otp', [VoterController::class, 'checkOngoingAndAvailableOtp']);
+Route::post('/vote-candidate', [VoterController::class, 'voteCandidate']);
+
 Route::patch('/{param}', [VoterController::class, 'update'])
     ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);
 

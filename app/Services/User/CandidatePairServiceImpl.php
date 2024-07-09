@@ -9,6 +9,7 @@ use App\Services\File\FileService;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -33,7 +34,8 @@ readonly class CandidatePairServiceImpl implements CandidatePairService
         return $this->candidatePairRepo->getAll([
             'paginate' => $request->input('paginate') == 'true',
             'per_page' => $request->input('per_page'),
-            'page' => $request->input('page')
+            'page' => $request->input('page'),
+            'election_session_id' => $request->input('election_session_id')
         ]);
     }
 
@@ -46,9 +48,35 @@ readonly class CandidatePairServiceImpl implements CandidatePairService
      */
     public function getCandidatePairByParam(Request $request, string $param): CandidatePair|null
     {
-        return $this->candidatePairRepo->getByParam($param, [
-            'fail' => true
-        ]);
+        return $this->candidatePairRepo->getByParam(
+            $param,
+            array_merge(
+                [
+                    'fail' => $request->fail ?? false,
+                ],
+            // Custom Filters
+
+            )
+        );
+    }
+
+    /**
+     * Get Candidate Pair For Vote Candidate
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $param
+     * @return \App\Models\User\CandidatePair|null
+     */
+    public function getCandidatePairForVoteCandidate(Request $request, string $param): CandidatePair|null
+    {
+        return $this->candidatePairRepo->getByParam(
+            $param, [
+                'for_vote_candidate' => [
+                    'election_session_id' => $request->input('election_session_id')
+                ],
+                'fail' => $request->fail ?? false
+            ]
+        );
     }
 
     /**
@@ -148,6 +176,32 @@ readonly class CandidatePairServiceImpl implements CandidatePairService
                     'path' => $oldImageUrl
                 ]
             ]);
+        }
+    }
+
+    /**
+     * Increment Total Vote For Vote Candidate
+     *
+     * @param Request $request
+     * @param string $param
+     * @return void
+     * @throws \Throwable
+     */
+    public function incrementTotalVoteForVoteCandidate(Request $request, string $param): void
+    {
+        $candidatePair = $this->getCandidatePairForVoteCandidate($request, $param);
+        if (!$candidatePair)
+            throw new \Exception(trans('candidate_pair.not_found'), Response::HTTP_BAD_REQUEST);
+
+        try {
+            DB::beginTransaction();
+
+            $this->candidatePairRepo->incrementTotalVoteByModel($candidatePair);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
     }
 

@@ -2,17 +2,22 @@
 
 namespace App\Services\User;
 
+use App\Helpers\Model\VoterHelper;
 use App\Models\User\Voter;
 use App\Repositories\User\VoterRepository;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 readonly class VoterServiceImpl implements VoterService
 {
-    public function __construct(private VoterRepository $voterRepo)
+    public function __construct(
+        private VoterRepository      $voterRepo,
+        private CandidatePairService $candidatePairService,
+    )
     {
         //
     }
@@ -75,6 +80,67 @@ readonly class VoterServiceImpl implements VoterService
         }
 
         return $voter;
+    }
+
+    /**
+     * Check Ongoing And Available Otp
+     *
+     * @param Request $request
+     * @return void
+     * @throws \Throwable
+     */
+    public function checkOngoingAndAvailableOtp(Request $request): void
+    {
+        $voter = $this->voterRepo->getByParam(null, [
+            'for_vote_candidate' => [
+                'otp' => $request->input('otp')
+            ]
+        ]);
+        if (!$voter)
+            throw new \Exception(trans('voter.get_for_vote_candidate_error'), Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Vote Candidate
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     * @throws \Throwable
+     */
+    public function voteCandidate(Request $request): void
+    {
+        // Get Voter
+        $voter = $this->voterRepo->getByParam(null, [
+            'for_vote_candidate' => [
+                'otp' => $request->input('otp')
+            ]
+        ]);
+        if (!$voter) {
+            throw new \Exception(
+                trans('voter.get_for_vote_candidate_error'), Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $this->candidatePairService->incrementTotalVoteForVoteCandidate(
+                makeRequest([
+                    'election_session_id' => $voter->election_session_id
+                ]),
+                $request->input('candidate_pair_id')
+            );
+
+            $this->voterRepo->updateByModel($voter, [
+                'otp_status' => VoterHelper::OTP_STATUSES['used'],
+                'selected_candidate_pair_id' => $request->input('candidate_pair_id')
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**

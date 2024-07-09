@@ -51,6 +51,15 @@ interface VoterRepository
     public function updateByParam(string $param, array $payload): Voter;
 
     /**
+     * Update Voter By Model
+     *
+     * @param \App\Models\User\Voter $voter
+     * @param array $payload
+     * @return \App\Models\User\Voter
+     */
+    public function updateByModel(Voter $voter, array $payload): Voter;
+
+    /**
      * Bulk Delete Voters
      *
      * @param array $payload

@@ -5,6 +5,7 @@ namespace App\Models\Election;
 use App\Models\User\CandidatePair;
 use App\Models\User\Voter;
 use App\Traits\DefaultTimestampsFormat;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -89,5 +90,19 @@ class ElectionSession extends Model
     public function election_results(): HasMany
     {
         return $this->hasMany(ElectionResult::class, 'election_session_id', 'id');
+    }
+
+    // Scope Methods
+
+    /**
+     * Ongoing Scope
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOngoing(Builder $builder): Builder
+    {
+        return $builder->where('start_date', '<=', now())
+            ->where('end_date', '>=', now());
     }
 }

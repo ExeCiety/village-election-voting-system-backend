@@ -52,6 +52,15 @@ interface CandidatePairRepository
     public function updateByModel(CandidatePair $candidatePair, array $payload): CandidatePair;
 
     /**
+     * Increment Total Vote By Model
+     *
+     * @param \App\Models\User\CandidatePair $candidatePair
+     * @param int $amount
+     * @return \App\Models\User\CandidatePair
+     */
+    public function incrementTotalVoteByModel(CandidatePair $candidatePair, int $amount = 1): CandidatePair;
+
+    /**
      * Bulk Delete Election Sessions
      *
      * @param array $payload

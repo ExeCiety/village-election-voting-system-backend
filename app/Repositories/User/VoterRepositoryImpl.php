@@ -36,9 +36,15 @@ readonly class VoterRepositoryImpl implements VoterRepository
      */
     public function getByParam(?string $param = null, array $payload = []): Voter|null
     {
-        $voter = $this->voter->when($param, function ($query) use ($param) {
-            return $query->where('id', $param);
-        });
+        $voter = $this->voter->baseFilter($payload);
+
+        $voter = $voter
+            ->when($param, function ($query) use ($param) {
+                return $query->where('id', $param);
+            })
+            ->when($payload['for_vote_candidate'] ?? false, function ($query) use ($payload) {
+                return $query->forVoteCandidate($payload['for_vote_candidate'] ?? []);
+            });
 
         if ($payload['fail'] ?? false) return $voter->firstOrFail();
         return $voter->first();
@@ -71,7 +77,7 @@ readonly class VoterRepositoryImpl implements VoterRepository
                 'birth_date' => $data['birth_date'] ?? null,
                 'address' => $data['address'] ?? null,
                 'gender' => $data['gender'] ?? null,
-                'otp' => $data['otp'] ?? null
+                'otp' => $data['otp'] ?? null,
             ], isNotNullArrayFilter())
         );
     }
@@ -86,7 +92,18 @@ readonly class VoterRepositoryImpl implements VoterRepository
     public function updateByParam(string $param, array $payload): Voter
     {
         $voter = $this->getByParam($param, ['fail' => true]);
+        return $this->updateByModel($voter, $payload);
+    }
 
+    /**
+     * Update Voter By Model
+     *
+     * @param \App\Models\User\Voter $voter
+     * @param array $payload
+     * @return \App\Models\User\Voter
+     */
+    public function updateByModel(Voter $voter, array $payload): Voter
+    {
         $voter->update(
             array_filter([
                 'election_session_id' => $payload['election_session_id'] ?? null,
@@ -95,7 +112,9 @@ readonly class VoterRepositoryImpl implements VoterRepository
                 'birth_date' => $payload['birth_date'] ?? null,
                 'address' => $payload['address'] ?? null,
                 'gender' => $payload['gender'] ?? null,
-                'otp' => $payload['otp'] ?? null
+                'otp' => $payload['otp'] ?? null,
+                'otp_status' => $payload['otp_status'] ?? null,
+                'selected_candidate_pair_id' => $payload['selected_candidate_pair_id'] ?? null,
             ], isNotNullArrayFilter())
         );
 

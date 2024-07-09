@@ -16,6 +16,7 @@ class ElectionServiceImplementationProvider extends ServiceProvider implements D
      */
     public array $singletons = [
         ElectionSessionService::class => ElectionSessionServiceImpl::class,
+
     ];
 
     /**

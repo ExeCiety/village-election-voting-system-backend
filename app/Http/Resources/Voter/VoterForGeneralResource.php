@@ -26,6 +26,8 @@ class VoterForGeneralResource extends JsonResource
             'birth_date' => $this->birth_date,
             'address' => $this->address,
             'gender' => $this->gender,
+            'otp' => $this->otp,
+            'otp_status' => $this->otp_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

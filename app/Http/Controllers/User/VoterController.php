@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Voter\BulkDeleteVoterRequest;
 use App\Http\Requests\Voter\CreateVoterRequest;
 use App\Http\Requests\Voter\UpdateVoterRequest;
+use App\Http\Requests\Voter\VoteCandidateRequest;
 use App\Http\Resources\BaseResourceCollection;
 use App\Http\Resources\Voter\VoterForGeneralResource;
 use App\Services\User\VoterService;
@@ -64,7 +65,6 @@ class VoterController extends Controller
         ], Response::HTTP_OK);
     }
 
-
     /**
      * Create Voter
      *
@@ -84,6 +84,44 @@ class VoterController extends Controller
             ],
             'errors' => null
         ], Response::HTTP_CREATED);
+    }
+
+    /**
+     * Check Ongoing And Available Otp
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkOngoingAndAvailableOtp(Request $request): JsonResponse
+    {
+        $this->voterService->checkOngoingAndAvailableOtp($request);
+
+        return response()->json([
+            'message' => trans('voter.otp_can_be_used', [
+                'name' => $this->resourceKeyName
+            ]),
+            'data' => null,
+            'errors' => null
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Vote Candidate
+     *
+     * @param \App\Http\Requests\Voter\VoteCandidateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function voteCandidate(VoteCandidateRequest $request): JsonResponse
+    {
+        $this->voterService->voteCandidate($request);
+
+        return response()->json([
+            'message' => trans('voter.vote_candidate_success', [
+                'name' => $this->resourceKeyName
+            ]),
+            'data' => null,
+            'errors' => null
+        ], Response::HTTP_OK);
     }
 
     /**

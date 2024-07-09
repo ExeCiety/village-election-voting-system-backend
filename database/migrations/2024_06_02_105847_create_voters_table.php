@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('gender', 10);
             $table->string('otp', 50);
             $table->string('otp_status', 10)->default(VoterHelper::OTP_STATUSES['not_used']);
+            $table->uuid('selected_candidate_pair_id')->nullable();
             $table->timestamps();
 
             $table->foreign('election_session_id')

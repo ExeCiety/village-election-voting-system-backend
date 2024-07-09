@@ -35,6 +35,22 @@ interface VoterService
     public function createVoter(Request $request): Voter;
 
     /**
+     * Check Ongoing And Available Otp
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function checkOngoingAndAvailableOtp(Request $request): void;
+
+    /**
+     * Vote Candidate
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     */
+    public function voteCandidate(Request $request): void;
+
+    /**
      * Update Voter
      *
      * @param \Illuminate\Http\Request $request

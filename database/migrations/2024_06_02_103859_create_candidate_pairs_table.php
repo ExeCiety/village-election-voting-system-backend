@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->text('image_url')->nullable();
             $table->unsignedInteger('number');
+            $table->unsignedBigInteger('total_vote');
             $table->timestamps();
 
             $table->foreign('election_session_id')
