@@ -27,7 +27,9 @@ readonly class ElectionSessionServiceImpl implements ElectionSessionService
         return $this->electionSessionRepo->getAll([
             'paginate' => $request->input('paginate') == 'true',
             'per_page' => $request->input('per_page'),
-            'page' => $request->input('page')
+            'page' => $request->input('page'),
+            'for_ongoing_voting' => $request->input('for_ongoing_voting'),
+            'for_ongoing_result' => $request->input('for_ongoing_result')
         ]);
     }
 

@@ -9,6 +9,8 @@ use App\Http\Requests\ElectionSession\CreateElectionSessionRequest;
 use App\Http\Requests\ElectionSession\UpdateElectionSessionRequest;
 use App\Http\Resources\BaseResourceCollection;
 use App\Http\Resources\ElectionSession\ElectionSessionForGeneralResource;
+use App\Http\Resources\ElectionSession\ElectionSessionForResultResource;
+use App\Http\Resources\ElectionSession\ElectionSessionForVotingResource;
 use App\Services\Election\ElectionSessionService;
 use App\Traits\ControllerResource;
 use Illuminate\Http\JsonResponse;
@@ -39,6 +41,50 @@ class ElectionSessionController extends Controller
             'data' => new BaseResourceCollection(
                 $this->electionSessionService->getAllElectionSessions($request),
                 ElectionSessionForGeneralResource::class
+            ),
+            'errors' => null
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Get Ongoing Election Sessions For Voting
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOngoingForVoting(Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => trans('resource.get_data_success', [
+                'name' => $this->resourceKeysName
+            ]),
+            'data' => new BaseResourceCollection(
+                $this->electionSessionService->getAllElectionSessions(
+                    $request->merge(['for_ongoing_voting' => []])
+                ),
+                ElectionSessionForVotingResource::class
+            ),
+            'errors' => null
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Get Ongoing Election Sessions For Result
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOngoingForResult(Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => trans('resource.get_data_success', [
+                'name' => $this->resourceKeysName
+            ]),
+            'data' => new BaseResourceCollection(
+                $this->electionSessionService->getAllElectionSessions(
+                    $request->merge(['for_ongoing_result' => []])
+                ),
+                ElectionSessionForResultResource::class
             ),
             'errors' => null
         ], Response::HTTP_OK);

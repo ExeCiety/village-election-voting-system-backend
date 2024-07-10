@@ -21,10 +21,19 @@ readonly class ElectionSessionRepositoryImpl implements ElectionSessionRepositor
      */
     public function getAll(array $payload = []): Collection|Paginator
     {
-        if (isset($payload['paginate']) && $payload['paginate'])
-            return $this->electionSession->simplePaginate($payload['per_page'] ?? null);
+        $electionSessions = $this->electionSession->baseFilter($payload);
+        $electionSessions = $electionSessions
+            ->when(isset($payload['for_ongoing_voting']), function ($query) {
+                return $query->forOngoingVoting();
+            })
+            ->when(isset($payload['for_ongoing_result']), function ($query) {
+                return $query->forOngoingResult();
+            });
 
-        return $this->electionSession->get();
+        if (isset($payload['paginate']) && $payload['paginate'])
+            return $electionSessions->simplePaginate($payload['per_page'] ?? null);
+
+        return $electionSessions->get();
     }
 
     /**

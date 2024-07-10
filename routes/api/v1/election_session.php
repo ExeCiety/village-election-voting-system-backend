@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ElectionSessionController::class, 'index'])
     ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);
 
+Route::get('/ongoing-for-voting', [ElectionSessionController::class, 'getOngoingForVoting']);
+Route::get('/ongoing-for-result', [ElectionSessionController::class, 'getOngoingForResult'])
+    ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);;
+
 Route::get('/{param}', [ElectionSessionController::class, 'show'])
     ->middleware(['auth:api', 'role:' . RoleHelper::ROLE_NAMES['petugas']]);
 
