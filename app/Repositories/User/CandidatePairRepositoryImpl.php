@@ -21,7 +21,9 @@ readonly class CandidatePairRepositoryImpl implements CandidatePairRepository
      */
     public function getAll(array $payload = []): Collection|Paginator
     {
-        $candidatePairs = $this->candidatePair->baseFilter($payload);
+        $candidatePairs = $this->candidatePair
+            ->orderBy('number')
+            ->baseFilter($payload);
 
         $candidatePairs = $candidatePairs
             ->when($payload['election_session_id'] ?? null, function ($query) use ($payload) {

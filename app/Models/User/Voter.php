@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string gender
  * @property string otp
  * @property string otp_status
+ *
+ * @property ElectionSession election_session
  */
 class Voter extends Model
 {

@@ -29,7 +29,9 @@ class VoterForGeneralResource extends JsonResource
             'otp' => $this->otp,
             'otp_status' => $this->otp_status,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+
+            'election_session' => $this->election_session
         ];
     }
 }
